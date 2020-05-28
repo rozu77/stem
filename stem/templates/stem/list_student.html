@@ -1,0 +1,1001 @@
+{% extends "stem/base.html" %}
+    {% load crispy_forms_tags %}{% load widget_tweaks %} {% load static %} {% block content %}
+    <script src="https://cdn.zingchart.com/zingchart.min.js"></script>
+    <div class="manage-container">
+        <h4>Filter:</h4>
+        <form method="get" class="form-filter">
+        <div class="row">
+            <div class="form-group col-md-2 mb-0">
+                <div class="input">
+                    {{ filter.form.lrn.label_tag }}
+                    {% render_field filter.form.lrn class="form-control" %}
+                </div>
+            </div>
+            <div class="form-group col-md-2 mb-0">
+                <div class="input">
+                    {{ filter.form.last_name.label_tag }}
+                    {% render_field filter.form.last_name class="form-control" %}
+                </div>
+            </div>
+            <div class="form-group col-md-2 mb-0">
+                <div class="input">
+                    {{ filter.form.first_name.label_tag }}
+                    {% render_field filter.form.first_name class="form-control" %}
+                </div>
+            </div>
+            <div class="form-group col-md-2 mb-0">
+                <div class="input">
+                    {{ filter.form.track.label_tag }}
+                    {% render_field filter.form.track class="form-control" %}
+                </div>
+            </div>
+            <div class="form-group col-md-2 mb-0">
+                <div class="input">
+                    {{ filter.form.strand.label_tag }}
+                    {% render_field filter.form.strand class="form-control" %}
+                </div>
+            </div>
+            <div class="form-group col-md-2 mb-0">
+                <div class="input">
+                    {{ filter.form.grade_level_to_enroll.label_tag }}
+                    {% render_field filter.form.grade_level_to_enroll class="form-control" %}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-md-2 mb-0">
+                <div class="input">
+                    {{ filter.form.sex.label_tag }}
+                    {% render_field filter.form.sex class="form-control" %}
+                </div>
+            </div>
+        </div>
+        <div class="frm-btn">
+          <button type="submit" class="btn btn-primary">Search</button>
+        </div>
+        </form>
+        <h4 class="mt-4">List of students</h4>
+        <div class="table-responsive mt-2">
+            <table class="table table-hover table-striped">
+                <thead>
+                    <tr>
+                    <th scope="col">LRN</th>
+                    <th scope="col">Full name</th>
+                    <th scope="col">Track</th>
+                    <th scope="col">Strand</th>
+                    <th scope="col">Grade Level Enrol</th>
+                    <th scope="col">PDF</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for student in students %}
+                    <tr>
+                        <th scope="row">{{ student.lrn }}</th>
+                        <td>{{ student.last_name }}, {{ student.first_name }} {{ student.middle_name }}</td>
+                        <td>{{ student.track }}</td>
+                        <td>{{ student.strand }}</td>
+                        <td>{{ student.grade_level_to_enroll }}</td>
+                        <td><a class="btn btn-primary" href="{% url 'stem:student-details' student.id %}">View PDF</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        <div class="pagination">
+            <div class="page">
+                {% if is_paginated %}
+
+                {% if page_obj.has_previous %}
+                    <a class="btn btn-outline-primary mb-4" href="?page=1">First</a>
+                    <a class="btn btn-outline-primary mb-4" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                {% endif %}
+
+                {% for num in page_obj.paginator.page_range %}
+                    {% if page_obj.number == num %}
+                    <a class="btn btn-primary mb-4" href="?page={{ num }}">{{ num }}</a>
+                    {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                    <a class="btn btn-outline-primary mb-4" href="?page={{ num }}">{{ num }}</a>
+                    {% endif %}
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+                    <a class="btn btn-outline-primary mb-4" href="?page={{ page_obj.next_page_number }}">Next</a>
+                    <a class="btn btn-outline-primary mb-4" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+                {% endif %}
+
+                {% endif %}
+            </div>    
+        </div>
+        <div class="data-container">
+            <div class="data-sec">
+                <div class="data-sec">
+                <h4>Enrolment Data ({{ date_today }})</h4>
+                <div class="form-group col-md-12 mb-6">
+                    <div class="form-row mb-2 p-2 bg-white">
+                        <div class="form-group col-md-3 mb-6">
+                            <span>Total Enrolled Students:</span>
+                            <span><b>{{ enrol }}</b></span><br/>
+                            <span>Grade 11:</span>
+                            <span><b>{{ g11 }}</b></span><br/>
+                            <span>Grade 12:</span>
+                            <span><b>{{ g12 }}</b></span><br/>
+                        </div>
+                        <div class="form-group col-md-3 mb-6">
+                            <b>By Track:</b><br/>
+                            <div class="form-row">
+                                <div class="form-group col-md-6 mb-6">
+                                    <span>Academic Track:</span>
+                                    <span><b>{{ at }}</b></span><br/>
+                                </div>
+                                <div class="form-group col-md-6 mb-6">
+                                    <span>Technical-vocational and Livelihood:</span>
+                                    <span><b>{{ tvl }}</b></span><br/>
+                                </div>
+                            </div>   
+                        </div>
+                        <div class="form-group col-md-6 mb-6">
+                            <b>By Strand:</b><br/>
+                            <div class="form-row">
+                                <div class="form-group col-md-3 mb-6">
+                                    <span>ABM:</span>
+                                    <span><b>{{ abm }}</b></span><br/>
+                                </div>
+                                <div class="form-group col-md-3 mb-6">
+                                    <span>GAS:</span>
+                                    <span><b>{{ gas }}</b></span><br/>
+                                </div>
+                                <div class="form-group col-md-3 mb-6">
+                                    <span>HUMSS:</span>
+                                    <span><b>{{ humss }}</b></span><br/>
+                                </div>
+                                <div class="form-group col-md-3 mb-6">
+                                    <span>STEM:</span>
+                                    <span><b>{{ stem }}</b></span><br/>
+                                </div>
+                            </div>   
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-md-12 mb-6">
+                    <div class="form-row">
+                        <div class="form-group col-md-6 mb-6">
+                            <div id="track"></div>
+                        </div>
+                        <div class="form-group col-md-6 mb-6">
+                            <div id="strand"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                <h4>Survey Data</h4>
+                <!--<div class="form-group col-md-12 mb-0">
+                    <div class="form-row">
+                        <div class="form-group col-md-3 mb-0">
+                            <b>D1. How does your child go to school?</b><br/>
+                            <span>Walking: <span><b>{{ walking }}</b></span><br/>
+                            <span>Public commute (land/ water): <span><b>{{ d2 }}</b></span><br/>
+                            <span>Family-owned vehicle: <span><b>{{ d3 }}</b></span><br/>
+                            <span>School service: <span><b>{{ d4 }}</b></span><br/>
+                        </div>
+                        <div class="form-group col-md-3 mb-0">
+                            <b>D4. What devices are available at home that the learner can use for learning?</b><br/>
+                            <span>Cable tv: <span><b>{{ e1 }}</b></span><br/>
+                            <span>Non-cable TV: <span><b>{{ e2 }}</b></span><br/>
+                            <span>Basic CP: <span><b>{{ e3 }}</b></span><br/>
+                            <span>Smartphone: <span><b>{{ e4 }}</b></span><br/>
+                            <span>Tablet: <span><b>{{ e5 }}</b></span><br/>
+                            <span>Radio: <span><b>{{ e6 }}</b></span><br/>
+                            <span>Desktop: <span><b>{{ e7 }}</b></span><br/>
+                            <span>Laptop: <span><b>{{ e8 }}</b></span><br/>
+                            <span>None: <span><b>{{ e9 }}</b></span><br/>
+                        </div>
+                        <div class="form-group col-md-3 mb-0">
+                            <b>D6. How do you connect to the internet?</b><br/>
+                            <span>Own mobile data: <span><b>{{ f1 }}</b></span><br/>
+                            <span>Own broadband internet: <span><b>{{ f2 }}</b></span><br/>
+                            <span>Computer shop: <span><b>{{ f3 }}</b></span><br/>
+                            <span>Other places outside the home with internet connection: <span><b>{{ f4 }}</b></span><br/>
+                            <span>None: <span><b>{{ f5 }}</b></span><br/>
+                        </div>
+                        <div class="form-group col-md-3 mb-0">
+                            <b>D7. What distance learning modality/ies do you prefer for your child? Choose all that applies</b><br/>
+                            <span>Online Learning: <span><b>{{ g1 }}</b></span><br/>
+                            <span>Television: <span><b>{{ g2 }}</b></span><br/>
+                            <span>Radio: <span><b>{{ g3 }}</b></span><br/>
+                            <span>Modular Learning: <span><b>{{ g4 }}</b></span><br/>
+                            <span>Combination of face to face with other modalities : <span><b>{{ g5 }}</b></span><br/>
+                        </div>
+                    </div>
+                </div>  
+                <div class="form-group col-md-12 mb-0">
+                    <div class="form-row">
+                        <div class="form-group col-md-3 mb-0">
+                            <b>D8. What are the challenges that may affect your child’s learning process through distance education? Choose all that applies.</b><br/>
+                            <span>Lack of gadgets: <span><b>{{ h1 }}</b></span><br/>
+                            <span>Insufficient Load: <span><b>{{ h2 }}</b></span><br/>
+                            <span>Unstable internet: <span><b>{{ h3 }}</b></span><br/>
+                            <span>Existing health conditions: <span><b>{{ h4 }}</b></span><br/>
+                            <span>Difficulty in independent learning: <span><b>{{ h5 }}</b></span><br/>
+                            <span>Conflicting in other activities: <span><b>{{ h6 }}</b></span><br/>
+                            <span>High electric consumption: <span><b>{{ h7 }}</b></span><br/>
+                            <span>Distractions: <span><b>{{ h8 }}</b></span><br/>
+                        </div>
+                        <div class="form-group col-md-9 mb-0">
+                            <b>Total Enrolled Students</b><br/>
+                            <span><b>{{ enrol }}</b></span><br/>
+                            <div class="form-row">
+                                <div class="form-group col-md-4 mb-0">
+                                    <b>Academic Track</b><br/>
+                                    <span><b>{{ at }}</b></span><br/>
+                                    <div class="form-row">
+                                <div class="form-group col-md-6 mb-0">
+                                    <b>ABM</b><br/>
+                                    <span><b>{{ abm }}</b></span><br/>
+                                    <b>ABM (Grade 11)</b><br/>
+                                    <span><b>{{ abm11 }}</b></span><br/>
+                                    <b>ABM (Grade 12)</b><br/>
+                                    <span><b>{{ abm12 }}</b></span><br/>
+                                    <br/>
+                                    <b>GAS</b><br/>
+                                    <span><b>{{ gas }}</b></span><br/>
+                                    <b>GAS (Grade 11)</b><br/>
+                                    <span><b>{{ gas11 }}</b></span><br/>
+                                    <b>GAS (Grade 12)</b><br/>
+                                    <span><b>{{ gas12 }}</b></span><br/>
+                                </div>
+                                <div class="form-group col-md-6 mb-0">
+                                    <b>HUMSS</b><br/>
+                                    <span><b>{{ humss }}</b></span><br/>
+                                    <b>HUMSS (Grade 11)</b><br/>
+                                    <span><b>{{ humss11 }}</b></span><br/>
+                                    <b>HUMSS (Grade 12)</b><br/>
+                                    <span><b>{{ humss12 }}</b></span><br/>
+                                    <br/>
+                                    <b>STEM</b><br/>
+                                    <span><b>{{ stem }}</b></span><br/>
+                                    <b>STEM (Grade 11)</b><br/>
+                                    <span><b>{{ stem11 }}</b></span><br/>
+                                    <b>STEM (Grade 12)</b><br/>
+                                    <span><b>{{ stem12 }}</b></span><br/>
+                                </div>
+                            </div>
+                                </div>
+                                <div class="form-group col-md-4 mb-0">
+                                    <b>Technical-Vocational-Livelihood</b><br/>
+                                    <span><b>{{ tvl }}</b></span><br/>
+                                </div>
+                            </div>
+                            <br/>
+                            
+                        </div>
+                    </div>
+                </div>-->        
+            </div>
+            
+            <div class="form-group col-md-12 mb-6">
+                <div class="form-row">
+                    <div class="form-group col-md-6 mb-0">
+                        <b>D1. How does your child go to school?</b><br/>
+                        <div id="myChart"></div>
+                    </div>
+                    <div class="form-group col-md-6 mb-0">
+                        <b>D6. How do you connect to the internet?</b><br/>
+                        <div id="myChart6"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-md-12 mb-6">
+                <b>D4. What devices are available at home that the learner can use for learning?</b><br/>
+                <div id="myChart4"></div>
+            </div>
+            <div class="form-group col-md-12 mb-6">
+                <b>D8. What are the challenges that may affect your child’s learning process through distance education? Choose all that applies.</b><br/>
+                <div id="myChart8"></div>
+            </div>
+            <div class="form-group col-md-12 mb-6">
+                <b>D7. What distance learning modality/ies do you prefer for your child?</b><br/>
+                <div id="myChart7"></div>
+            </div>
+            
+        </div>
+    </div>
+    <script>
+
+        var chartData = {
+            "type":"bar",
+            "title": {
+                "text": "By Strand",
+                "font-color": "#7E7E7E",
+                "backgroundColor": "none",
+                "font-size": "22px",
+                "alpha": 1,
+                "adjust-layout": true,
+            },
+             "plotarea": {
+                "margin": "dynamic"
+            },
+            "legend": {
+                "layout": "x3",
+                "overflow": "page",
+                "alpha": 0.05,
+                "shadow": false,
+                "align": "center",
+                "adjust-layout": true,
+                "marker": {
+                    "type": "circle",
+                    "border-color": "none",
+                    "size": "10px"
+                },
+                "border-width": 0,
+                "maxItems": 3,
+                "toggle-action": "hide",
+                "pageOn": {
+                    "backgroundColor": "#000",
+                    "size": "10px",
+                    "alpha": 0.65
+                },
+                "pageOff": {
+                    "backgroundColor": "#7E7E7E",
+                    "size": "10px",
+                    "alpha": 0.65
+                },
+                "pageStatus": {
+                    "color": "black"
+                }
+            },
+            "scale-x":{
+                "values":[
+                    "ABM",
+                    "GAS",
+                    "HUMSS",
+                    "STEM",
+                ]
+            },
+            "plot": {
+                "bars-space-left": 0.15,
+                "bars-space-right": 0.15,
+                "animation": {
+                    "effect": "ANIMATION_SLIDE_BOTTOM",
+                    "sequence": 0,
+                    "speed": 800,
+                    "delay": 800
+                }
+            },
+            
+            "series":[
+                {
+                    "values":[
+                        {{ abm11 }},
+                        {{ gas11 }},
+                        {{ humss11 }},
+                        {{ stem11 }},
+                    ],
+                    "alpha": 0.95,
+                    "borderRadiusTopLeft": 7,
+                    "background-color": "#8993c7",
+                    "text": "Grade 11",
+                    
+                },
+                {
+                    "values":[
+                        {{ abm12 }},
+                        {{ gas12 }},
+                        {{ humss12 }},
+                        {{ stem12 }},
+                    ],
+                    "alpha": 0.95,
+                    "borderRadiusTopLeft": 7,
+                    "background-color": "#333333",
+                    "text": "Grade 12",
+                    
+                },
+            ]
+        }
+
+        zingchart.render({
+            id: "strand",
+            data: chartData,
+        });
+
+        var chartData = {
+            "type":"bar",
+            "title": {
+                "text": "By Track",
+                "font-color": "#7E7E7E",
+                "backgroundColor": "none",
+                "font-size": "22px",
+                "alpha": 1,
+                "adjust-layout": true,
+            },
+             "plotarea": {
+                "margin": "dynamic"
+            },
+            "legend": {
+                "layout": "x3",
+                "overflow": "page",
+                "alpha": 0.05,
+                "shadow": false,
+                "align": "center",
+                "adjust-layout": true,
+                "marker": {
+                    "type": "circle",
+                    "border-color": "none",
+                    "size": "10px"
+                },
+                "border-width": 0,
+                "maxItems": 3,
+                "toggle-action": "hide",
+                "pageOn": {
+                    "backgroundColor": "#000",
+                    "size": "10px",
+                    "alpha": 0.65
+                },
+                "pageOff": {
+                    "backgroundColor": "#7E7E7E",
+                    "size": "10px",
+                    "alpha": 0.65
+                },
+                "pageStatus": {
+                    "color": "black"
+                }
+            },
+            "scale-x":{
+                "values":[
+                    "Academic Track",
+                    "Technical-vocational and Livelihood",
+                ]
+            },
+            "plot": {
+                "bars-space-left": 0.15,
+                "bars-space-right": 0.15,
+                "animation": {
+                    "effect": "ANIMATION_SLIDE_BOTTOM",
+                    "sequence": 0,
+                    "speed": 800,
+                    "delay": 800
+                }
+            },
+            
+            "series":[
+                {
+                    "values":[
+                        {{ atg11 }},
+                        {{ tvlg11 }},
+                    ],
+                    "alpha": 0.95,
+                    "borderRadiusTopLeft": 7,
+                    "background-color": "#8993c7",
+                    "text": "Grade 11",
+                    
+                },
+                {
+                    "values":[
+                        {{ atg12 }},
+                        {{ tvlg11 }},
+                    ],
+                    "alpha": 0.95,
+                    "borderRadiusTopLeft": 7,
+                    "background-color": "#333333",
+                    "text": "Grade 12",
+                    
+                },
+            ]
+        }
+
+        zingchart.render({
+            id: "track",
+            data: chartData,
+        });
+
+
+        var chartData = {
+            "type":"bar",
+            "title": {
+                "text": "How does your child go to school?",
+                "font-color": "#7E7E7E",
+                "backgroundColor": "none",
+                "font-size": "22px",
+                "alpha": 1,
+                "adjust-layout": true,
+            },
+             "plotarea": {
+                "margin": "dynamic"
+            },
+            "legend": {
+                "layout": "x3",
+                "overflow": "page",
+                "alpha": 0.05,
+                "shadow": false,
+                "align": "center",
+                "adjust-layout": true,
+                "marker": {
+                    "type": "circle",
+                    "border-color": "none",
+                    "size": "10px"
+                },
+                "border-width": 0,
+                "maxItems": 3,
+                "toggle-action": "hide",
+                "pageOn": {
+                    "backgroundColor": "#000",
+                    "size": "10px",
+                    "alpha": 0.65
+                },
+                "pageOff": {
+                    "backgroundColor": "#7E7E7E",
+                    "size": "10px",
+                    "alpha": 0.65
+                },
+                "pageStatus": {
+                    "color": "black"
+                }
+            },
+            "scale-x":{
+                "values":[
+                    "Walking",
+                    "Public commute",
+                    "Fam-owned vehicle",
+                    "School service:",
+                ]
+            },
+            "plot": {
+                "bars-space-left": 0.15,
+                "bars-space-right": 0.15,
+                "animation": {
+                    "effect": "ANIMATION_SLIDE_BOTTOM",
+                    "sequence": 0,
+                    "speed": 800,
+                    "delay": 800
+                }
+            },
+            
+            "series":[
+                {
+                    "values":[
+                        {{ d1g11 }},
+                        {{ d2g11 }},
+                        {{ d3g11 }},
+                        {{ d4g11 }},
+                    ],
+                    "alpha": 0.95,
+                    "borderRadiusTopLeft": 7,
+                    "background-color": "#8993c7",
+                    "text": "Grade 11",
+                    
+                },
+                {
+                    "values":[
+                        {{ d1g12 }},
+                        {{ d2g12 }},
+                        {{ d3g12 }},
+                        {{ d4g12 }},
+                    ],
+                    "alpha": 0.95,
+                    "borderRadiusTopLeft": 7,
+                    "background-color": "#333333",
+                    "text": "Grade 12",
+                    
+                },
+            ]
+        }
+
+        zingchart.render({
+            id: "myChart",
+            data: chartData,
+        });
+
+
+
+        var chartData4 = {
+            "type":"bar",
+            "scale-x":{
+                "values":[
+                    "Cable tv",
+                    "Non-cable TV",
+                    "Basic CP",
+                    "Smartphone",
+                    "Tablet",
+                    "Radio",
+                    "Desktop",
+                    "Laptop",
+                    "None",
+                ]
+            },
+            "title": {
+                "text": "What devices are available at home that the learner can use for learning?",
+                "font-color": "#7E7E7E",
+                "backgroundColor": "none",
+                "font-size": "22px",
+                "alpha": 1,
+                "adjust-layout": true,
+            },
+             "plotarea": {
+                "margin": "dynamic"
+            },
+            "legend": {
+                "layout": "x3",
+                "overflow": "page",
+                "alpha": 0.05,
+                "shadow": false,
+                "align": "center",
+                "adjust-layout": true,
+                "marker": {
+                    "type": "circle",
+                    "border-color": "none",
+                    "size": "10px"
+                },
+                "border-width": 0,
+                "maxItems": 3,
+                "toggle-action": "hide",
+                "pageOn": {
+                    "backgroundColor": "#000",
+                    "size": "10px",
+                    "alpha": 0.65
+                },
+                "pageOff": {
+                    "backgroundColor": "#7E7E7E",
+                    "size": "10px",
+                    "alpha": 0.65
+                },
+                "pageStatus": {
+                    "color": "black"
+                }
+            },
+            "plot": {
+                "bars-space-left": 0.15,
+                "bars-space-right": 0.15,
+                "animation": {
+                    "effect": "ANIMATION_SLIDE_BOTTOM",
+                    "sequence": 0,
+                    "speed": 800,
+                    "delay": 800
+                }
+            },
+            "series":[
+                {
+                    "values":[
+                        {{ e1g11 }},
+                        {{ e2g11 }},
+                        {{ e3g11 }},
+                        {{ e4g11 }},
+                        {{ e5g11 }},
+                        {{ e6g11 }},
+                        {{ e7g11 }},
+                        {{ e8g11 }},
+                        {{ e9g11 }},
+                    ],
+                    "alpha": 0.95,
+                    "borderRadiusTopLeft": 7,
+                    "background-color": "#8993c7",
+                    "text": "Grade 11",
+                },
+                {
+                    "values":[
+                        {{ e1g12 }},
+                        {{ e2g12 }},
+                        {{ e3g12 }},
+                        {{ e4g12 }},
+                        {{ e5g12 }},
+                        {{ e6g12 }},
+                        {{ e7g12 }},
+                        {{ e8g12 }},
+                        {{ e9g12 }},
+                    ],
+                    "alpha": 0.95,
+                    "borderRadiusTopLeft": 7,
+                    "background-color": "#333333",
+                    "text": "Grade 12",
+                },
+            ]
+        }
+
+        zingchart.render({
+            id: "myChart4",
+            data: chartData4,
+        });
+
+
+        var chartData6 = {
+            "type":"bar",
+            "scale-x":{
+                "values":[
+                    "Own mobile data",
+                    "Own Br internet",
+                    "Computer shop",
+                    "Other places",
+                    "None",
+                ]
+            },
+            "title": {
+                "text": "How do you connect to the internet?",
+                "font-color": "#7E7E7E",
+                "backgroundColor": "none",
+                "font-size": "22px",
+                "alpha": 1,
+                "adjust-layout": true,
+            },
+             "plotarea": {
+                "margin": "dynamic"
+            },
+            "legend": {
+                "layout": "x3",
+                "overflow": "page",
+                "alpha": 0.05,
+                "shadow": false,
+                "align": "center",
+                "adjust-layout": true,
+                "marker": {
+                    "type": "circle",
+                    "border-color": "none",
+                    "size": "10px"
+                },
+                "border-width": 0,
+                "maxItems": 3,
+                "toggle-action": "hide",
+                "pageOn": {
+                    "backgroundColor": "#000",
+                    "size": "10px",
+                    "alpha": 0.65
+                },
+                "pageOff": {
+                    "backgroundColor": "#7E7E7E",
+                    "size": "10px",
+                    "alpha": 0.65
+                },
+                "pageStatus": {
+                    "color": "black"
+                }
+            },
+            "plot": {
+                "bars-space-left": 0.15,
+                "bars-space-right": 0.15,
+                "animation": {
+                    "effect": "ANIMATION_SLIDE_BOTTOM",
+                    "sequence": 0,
+                    "speed": 800,
+                    "delay": 800
+                }
+            },
+            "series":[
+                {
+                    "values":[
+                        {{ f1g11 }},
+                        {{ f2g11 }},
+                        {{ f3g11 }},
+                        {{ f4g11 }},
+                        {{ f5g11 }},
+                    ],
+                    "alpha": 0.95,
+                    "borderRadiusTopLeft": 7,
+                    "background-color": "#8993c7",
+                    "text": "Grade 11",
+                },
+                {
+                    "values":[
+                        {{ f1g12 }},
+                        {{ f2g12 }},
+                        {{ f3g12 }},
+                        {{ f4g12 }},
+                        {{ f5g12 }},
+                    ],
+                    "alpha": 0.95,
+                    "borderRadiusTopLeft": 7,
+                    "background-color": "#333333",
+                    "text": "Grade 12",
+                }
+            ]
+        }
+
+        zingchart.render({
+            id: "myChart6",
+            data: chartData6,
+        });
+
+
+        var chartData7 = {
+            "type":"bar",
+            "scale-x":{
+                "values":[
+                    "Online Learning",
+                    "Television",
+                    "Radio",
+                    "Modular Learning",
+                    "Combination of face to face with other modalities",
+                ]
+            },
+            "title": {
+                "text": "What distance learning modality/ies do you prefer for your child?",
+                "font-color": "#7E7E7E",
+                "backgroundColor": "none",
+                "font-size": "22px",
+                "alpha": 1,
+                "adjust-layout": true,
+            },
+             "plotarea": {
+                "margin": "dynamic"
+            },
+            "legend": {
+                "layout": "x3",
+                "overflow": "page",
+                "alpha": 0.05,
+                "shadow": false,
+                "align": "center",
+                "adjust-layout": true,
+                "marker": {
+                    "type": "circle",
+                    "border-color": "none",
+                    "size": "10px"
+                },
+                "border-width": 0,
+                "maxItems": 3,
+                "toggle-action": "hide",
+                "pageOn": {
+                    "backgroundColor": "#000",
+                    "size": "10px",
+                    "alpha": 0.65
+                },
+                "pageOff": {
+                    "backgroundColor": "#7E7E7E",
+                    "size": "10px",
+                    "alpha": 0.65
+                },
+                "pageStatus": {
+                    "color": "black"
+                }
+            },
+            "plot": {
+                "bars-space-left": 0.15,
+                "bars-space-right": 0.15,
+                "animation": {
+                    "effect": "ANIMATION_SLIDE_BOTTOM",
+                    "sequence": 0,
+                    "speed": 800,
+                    "delay": 800
+                }
+            },
+            "series":[
+                {
+                    "values":[
+                        {{ g1g11 }},
+                        {{ g2g11 }},
+                        {{ g3g11 }},
+                        {{ g4g11 }},
+                        {{ g5g11 }},
+                    ],
+                    "alpha": 0.95,
+                    "borderRadiusTopLeft": 7,
+                    "background-color": "#8993c7",
+                    "text": "Grade 11",
+                },
+                {
+                    "values":[
+                        {{ g1g12 }},
+                        {{ g2g12 }},
+                        {{ g3g12 }},
+                        {{ g4g12 }},
+                        {{ g5g12 }},
+                    ],
+                    "alpha": 0.95,
+                    "borderRadiusTopLeft": 7,
+                    "background-color": "#333333",
+                    "text": "Grade 12",
+                }
+            ]
+        }
+
+        zingchart.render({
+            id: "myChart7",
+            data: chartData7,
+        });
+
+
+
+
+        var chartData8 = {
+            "type":"bar",
+            "scale-x":{
+                "values":[
+                    "Lack of Gadgets",
+                    "Insufficient Load",
+                    "Unstable internet",
+                    "Existing health conditions",
+                    "Diff. in indpdnt learning",
+                    "Conflict activities",
+                    "High electric consumption",
+                    "Distractions",
+                ]
+            },
+            "title": {
+                "text": "What are the challenges that may affect your child’s learning process through distance education?",
+                "font-color": "#7E7E7E",
+                "backgroundColor": "none",
+                "font-size": "22px",
+                "alpha": 1,
+                "adjust-layout": true,
+            },
+             "plotarea": {
+                "margin": "dynamic"
+            },
+            "legend": {
+                "layout": "x3",
+                "overflow": "page",
+                "alpha": 0.05,
+                "shadow": false,
+                "align": "center",
+                "adjust-layout": true,
+                "marker": {
+                    "type": "circle",
+                    "border-color": "none",
+                    "size": "10px"
+                },
+                "border-width": 0,
+                "maxItems": 3,
+                "toggle-action": "hide",
+                "pageOn": {
+                    "backgroundColor": "#000",
+                    "size": "10px",
+                    "alpha": 0.65
+                },
+                "pageOff": {
+                    "backgroundColor": "#7E7E7E",
+                    "size": "10px",
+                    "alpha": 0.65
+                },
+                "pageStatus": {
+                    "color": "black"
+                }
+            },
+            "plot": {
+                "bars-space-left": 0.15,
+                "bars-space-right": 0.15,
+                "animation": {
+                    "effect": "ANIMATION_SLIDE_BOTTOM",
+                    "sequence": 0,
+                    "speed": 800,
+                    "delay": 800
+                }
+            },
+            "series":[
+                {
+                    "values":[
+                        {{ h1g11 }},
+                        {{ h2g11 }},
+                        {{ h3g11 }},
+                        {{ h4g11 }},
+                        {{ h5g11 }},
+                        {{ h6g11 }},
+                        {{ h7g11 }},
+                        {{ h8g11 }},
+                    ],
+                    "alpha": 0.95,
+                    "borderRadiusTopLeft": 7,
+                    "background-color": "#8993c7",
+                    "text": "Grade 11",
+                },
+                {
+                    "values":[
+                        {{ h1g12 }},
+                        {{ h2g12 }},
+                        {{ h3g12 }},
+                        {{ h4g12 }},
+                        {{ h5g12 }},
+                        {{ h6g12 }},
+                        {{ h7g12 }},
+                        {{ h8g12 }},
+                    ],
+                    "alpha": 0.95,
+                    "borderRadiusTopLeft": 7,
+                    "background-color": "#333333",
+                    "text": "Grade 12",
+                }
+            ]
+        }
+
+        zingchart.render({
+            id: "myChart8",
+            data: chartData8,
+        });
+
+    </script>
+    </div>
+     <!-- The Modal -->
+    {% endblock %}

@@ -1,0 +1,23 @@
+{% extends "stem/base.html" %}
+{% load crispy_forms_tags %} {% load static %} {% block content %}
+<div class="login-page">
+  <div class="login-con">
+    <form method="POST">
+      {% csrf_token %}
+      <h5>Catarman National High School</h5>
+      <b>Create an account first to access the enrolment form</b>
+      <fieldset class="form-group">
+        {{ form|crispy }}
+      </fieldset>
+      <div class="form-group">
+        <button class="btn btn-outline-info" type="submit">Sign Up</button>
+      </div>
+    </form>
+    <div class="border-top pt-3">
+      <small class="text-muted">
+        Already Have An Account? <a class="ml-2" href="{% url 'stem:login' %}">Sign In</a>
+      </small>
+    </div>
+  </div>
+</div>
+{% endblock %}

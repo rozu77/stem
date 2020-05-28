@@ -1,0 +1,225 @@
+{% load crispy_forms_tags %} {% load static %} {% block content %}
+    <div class="container-edit" id="target">
+    <div class="form-header-e-ins-p">
+      <div class="form-group col-md-12 mb-0">
+        <div class="form-row">
+            <div class="form-group col-md-1.5 mb-0">
+                <div class="rounded-circle-edited-l">
+                    <img
+                    class="account-img"
+                    src="{{ student.image.url }}"
+                    />
+                </div>
+            </div>
+            <div class="form-group col-md-8 mb-0">
+                <b>{{ student.last_name|title }}, {{ student.first_name|title }} {{ student.middle_name|title }}</b><br>
+                {{ student.track|title }} ({{ student.strand|title }}) {{ student.grade_level_to_enroll|title }} ({{ student.school_year1|title }} - {{ student.school_year2|title }})<br>
+                
+                {{ student.house_number_and_street|title }} {{ student.barangay|title }}, {{ student.city_municipality|title }}, {{ student.province|title }}<br>
+                <!--<button type="button" class="btn btn-success" onclick="openModal();currentSlide(1)">
+                  School Card
+                </button>
+                <button type="button" class="btn btn-success" onclick="openModal();currentSlide(1)">
+                  Birth Certificate
+                </button>-->
+            </div>
+        </div>
+      </div>
+    </div>
+    <div class="content-login-p">
+      <div class="master-login">
+            <h4>A. Grade Level and School Information</h4>
+            <div class="form-row">
+              <div class="form-group col-md-3 pb-6  bg-sec">
+                <b>School Year</b><br>
+                <span>{{ student.school_year1|title }} - {{ student.school_year2|title }}</span><br>
+              </div>
+              <div class="form-group col-md-4 pb-6  bg-sec">
+                <b>Has LRN</b><br>
+                <span>{{ student.wlrn|title }}</span><br>
+              </div>
+              <div class="form-group col-md-5 pb-6  bg-sec">
+                <b>Returning (Balik eskwela)</b><br>
+                <span>{{ student.returning|title }}</span><br>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-3 mb-0">
+                <b>Grade level to enroll</b><br>
+                <span>{{ student.grade_level_to_enroll|title }}</span><br>
+                <b>Last Grade Level completed</b><br>
+                <span>{{ student.last_grade_level_com|title }}</span><br>
+                <b>Last School year</b><br>
+                <span>{{ student.last_school_year_com|title }}</span><br>
+              </div>
+              <div class="form-group col-md-4 pb-6 bg-sec">
+                <div class="form-row">
+                  <div class="form-group col-md-8 ">
+                    <b>Last School Attended</b><br>
+                    <span>{{ student.last_school_attended|title }}</span><br>
+                  </div>
+                  <div class="form-group col-md-4 mb-0">
+                    <b>School ID:</b><br>
+                    <span>{{ student.school_id|title }}</span><br>
+                  </div>
+                </div>
+                <div class="form-group col-md-13 mb-0">
+                  <b>School Address:</b><br>
+                  <span>{{ student.school_address|title }}</span><br>
+                </div>
+                <div class="form-group col-md-13 mb-0">
+                  <b>School Type:</b><br>
+                  <span>{{ student.school_type|title }}</span><br>
+                </div>
+              </div>
+              <div class="form-group col-md-5 mb-0">
+                <div class="form-row">
+                  <div class="form-group col-md-8 mb-0">
+                    <b>School to enroll:</b><br>
+                    <span>{{ student.school_to_enroll_in|title }}</span><br>
+                  </div>
+                  <div class="form-group col-md-4 mb-0">
+                    <b>School ID:</b><br>
+                    <span>{{ student.school_id_to_enroll|title }}</span><br>
+                  </div>
+                </div>
+                <div class="form-group col-md-13 mb-0">
+                  <b>School Address:</b><br>
+                  <span>{{ student.school_address_to_enroll|title }}</span><br>
+                </div>
+              </div>
+              <div class="form-group col-md-12 bg-sec">
+                  <div class="form-row">
+                    <div class="form-group col-md-3 mb-0">
+                      <b>Semester:</b><br>
+                      <span>{{ student.semester|title }}</span><br>
+                    </div>
+                    <div class="form-group col-md-4 mb-0">
+                      <b>Track:</b><br>
+                      <span>{{ student.track|title }}</span><br>
+                    </div>
+                    <div class="form-group col-md-5 mb-0">
+                      <b>Strand:</b><br>
+                      <span>{{ student.strand|title }}</span><br>
+                    </div>
+                </div>
+              </div>  
+            </div>   
+      </div>
+    </div>   
+    <div class="content-login-p">
+      <div class="master-login">
+            <h4>B. Student Information</h4>
+            <div class="form-row bg-sec">
+                <div class="form-group col-md-6 mb-0 ">
+                  <b>PSA Birth Certificate No.:</b><br>
+                  <span>{{ student.psa_cer_no|title }}</span><br>
+                </div>
+                <div class="form-group col-md-6 mb-0">
+                  <b>Learners Reference Number (LRN)*:</b><br>
+                  <span>{{ student.lrn|title }}</span><br>
+                </div>
+            </div>
+            <div class="form-row bg-sec">
+                <div class="form-group col-md-3 mb-0 ">
+                  <b>Full name:</b><br>
+                  <span>{{ student.last_name|title }}, {{ student.first_name|title }} {{ student.middle_name|title }}</span><br>
+                  <b>Birthdate:</b><br>
+                  <span>{{ student.birthdate|date:"d M Y" }}</span><br>
+                </div>
+                <div class="form-group col-md-3 mb-0 ">
+                  <b>Sex:</b><br>
+                  <span>{{ student.sex|title }}</span><br>
+                  <b>Age:</b><br>
+                  <span>{{ student.age|title }}</span><br>
+                </div>
+                <div class="form-group col-md-6 mb-0">
+                  <b>Address:</b><br>
+                  <span>{{ student.lhouse_number_and_streetrn|title }} {{ student.barangay|title }} {{ student.city_municipality|title }}, {{ student.province|title }}, {{ student.region|title }}</span><br>
+                </div>
+            </div>
+            <div class="form-row bg-sec">
+                <div class="form-group col-md-6 mb-0 ">
+                  <b>Belonging to Indigenous People (IP):</b><br>
+                  <span>{{ student.ip|title }} ({{ student.ip_specify|title }})</span><br>
+                  <b>Mother Tounge:</b><br>
+                  <span>{{ student.mother_tongue|title }}</span><br>
+                  <b>Religion:</b><br>
+                  <span>{{ student.religion|title }}</span><br>
+                </div>
+                <div class="form-group col-md-6 mb-0 ">
+                  <b>For Learners with Special Education Needs</b>
+                  <b>Does the learner have special education needs?</b><br>
+                  <span>{{ student.special_ed_needs|title }} ({{ student.speed_needs_specify|title }})</span><br>
+                  <b>Do you have any assistive technology devices available at home?</b><br>
+                  <span>{{ student.technology_devices|title }} ({{ student.technology_devices_specify|title }})</span><br>
+                </div>
+            </div>
+      </div>
+    </div>
+    <div class="content-login-p">
+      <div class="master-login">
+            <h4>C. Parent/Guardian Information</h4>
+            <div class="form-row">
+                <div class="form-group col-md-4 mb-0">
+                  <b>Father Full name:</b><br>
+                  <span>{{ student.father_full_name|title }}</span><br>
+                  <b>Father Educational Attainment:</b><br>
+                  <span>{{ student.father_educ_attainment|title }}</span><br>
+                  <b>Father employment status</b><br>
+                  <span>{{ student.father_employment_status|title }}</span><br>
+                  <b>Working from home due to_ECQ:</b><br>
+                  <span>{{ student.father_working_from_home_due_to_ecq|title }}</span><br>
+                  <b>Father Contact No:</b><br>
+                  <span>{{ student.father_contact|title }}</span><br>
+                </div>
+                <div class="form-group col-md-4 mb-0 bg-sec">
+                  <b>Mother Full name:</b><br>
+                  <span>{{ student.mother_full_name|title }}</span><br>
+                  <b>Mother Educational Attainment:</b><br>
+                  <span>{{ student.mother_educ_attainment|title }}</span><br>
+                  <b>Mother employment status</b><br>
+                  <span>{{ student.mother_employment_status|title }}</span><br>
+                  <b>Working from home due to_ECQ:</b><br>
+                  <span>{{ student.mother_working_from_home_due_to_ecq|title }}</span><br>
+                  <b>Mother Contact No:</b><br>
+                  <span>{{ student.mother_contact|title }}</span><br>
+                </div>
+                <div class="form-group col-md-4 mb-0">
+                  <b>Guardian Full name:</b><br>
+                  <span>{{ student.guardian_full_name|title }}</span><br>
+                  <b>Guardian Educational Attainment:</b><br>
+                  <span>{{ student.guardian_educ_attainment|title }}</span><br>
+                  <b>Guardian employment status</b><br>
+                  <span>{{ student.guardian_employment_status|title }}</span><br>
+                  <b>Working from home due to_ECQ:</b><br>
+                  <span>{{ student.guardian_working_from_home_due_to_ecq|title }}</span><br>
+                  <b>Guardian Contact No:</b><br>
+                  <span>{{ student.guardian_contact|title }}</span><br>
+                </div>
+            </div>
+      </div>
+    </div>
+          
+          <!-- Button trigger modal -->
+          
+
+          <!-- The Modal -->
+          <div id="myModal" class="modal">
+
+            <!-- The Close Button -->
+            <span class="close">&times;</span>
+
+            <!-- Modal Content (The Image) -->
+            <img class="modal-content" id="img01">
+
+            <!-- Modal Caption (Image Text) -->
+            <div id="caption"></div>
+          </div>
+          <!--<div class="form-group">
+            <button class="btn btn-primary" type="submit">Submit</button>
+          </div>-->
+      </div>
+    </>
+    </div>
+    {% endblock %}

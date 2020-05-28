@@ -1,0 +1,24 @@
+{% extends "stem/base.html" %}
+    {% load crispy_forms_tags %} {% load static %} {% block content %}
+    <div class="login-page">
+      <div class="login-con">
+        <form method="POST">
+          {% csrf_token %}
+          <h5>Catarman National High School</h5>
+      <fieldset class="form-group">
+        <div class="img-log">
+            <!--<img src="{% static 'd_network/img/copypasta1.png' %}" alt="">-->
+            <h3>Login</h3>
+        </div>
+        {{ form|crispy }}
+      </fieldset>
+      <div class="form-group">
+        <button class="btn btn-outline-info" type="submit">Login</button>
+      </div>
+      <div class="border-top pt-3">
+        <small class="text-muted">
+          Don't Have An Account? <a class="ml-2" href="{% url 'stem:login' %}">Sign up now</a>
+        </small>
+      </div>
+    </form>
+    {% endblock %}

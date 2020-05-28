@@ -1,0 +1,378 @@
+{% extends "stem/base.html" %}
+      {% load crispy_forms_tags %} {% load static %} {% block content %}
+    <div class="container">
+    <div class="form-header-e">
+      <div class="form-row">
+        <div class="form-group col-md-2 mb-0">
+          <img src="{% static 'stem/img/depedlogo.png' %}" alt="">
+        </div>
+        <div class="form-group col-md-8 mb-0">
+          <h2>LEARNER ENROLMENT AND SURVEY FORM</h2>
+        </div>
+        <div class="form-group col-md-2 mb-0">
+          <img src="{% static 'stem/img/cnhslogo.png' %}" alt="">
+        </div>
+      </div>
+    </div>
+    <div class="form-header-e-ins">
+      <div class="form-group col-md-12 mb-0">
+          <b>Instructions</b>
+          <ol>
+            <li>This enrolment survey shall be answered by the parent/guardian of the learner</li>
+            <li>Please read the questions carefully and fill in all applicable spaces and write your answers legibly in CAPITAL letters. For items not applicable, write N/A.</li>
+            <li>For questions/ clarifications, please ask for the assistance of the teacher/ person-in-charge.</li>
+          </ol>
+      </div>
+    </div>
+    <div class="content-login">
+      <div class="master-login">
+        <form method="POST" enctype="multipart/form-data">
+          {% csrf_token %}
+          <fieldset class="form-group">
+            <div class="img-log">
+              <!--<img src="{% static 'd_network/img/copypasta1.png' %}" alt="">-->
+            </div>
+            <h4>A. Grade Level and School Information</h4>
+            <div class="form-row">
+              <div class="form-group col-md-2 mb-0">
+                {{ form.school_year1|as_crispy_field }}
+              </div>
+              <div class="form-group col-md-2 mb-0">
+                {{ form.school_year2|as_crispy_field }}
+              </div>
+              <div class="form-group col-md-4 mb-0">
+                {{ form.wlrn|as_crispy_field }}
+              </div>
+              <div class="form-group col-md-4 mb-0">
+                {{ form.returning|as_crispy_field }}
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-3 mb-0 bg-sec">
+                {{ form.grade_level_to_enroll|as_crispy_field }}
+                {{ form.last_grade_level_com|as_crispy_field }}
+                {{ form.last_school_year_com|as_crispy_field }}
+              </div>
+              <div class="form-group col-md-4 mb-0">
+                <div class="form-row">
+                  <div class="form-group col-md-8 mb-0">
+                    {{ form.last_school_attended|as_crispy_field }}
+                  </div>
+                  <div class="form-group col-md-4 mb-0">
+                    {{ form.school_id|as_crispy_field }}
+                  </div>
+                </div>
+                <div class="form-group col-md-13 mb-0">
+                  {{ form.school_address|as_crispy_field }}
+                </div>
+                <div class="form-group col-md-13 mb-0">
+                  {{ form.school_type|as_crispy_field }}
+                </div>
+              </div>
+              <div class="form-group col-md-5 mb-0 bg-sec">
+                <div class="form-row">
+                  <div class="form-group col-md-8 mb-0">
+                    {{ form.school_to_enroll_in|as_crispy_field }}
+                  </div>
+                  <div class="form-group col-md-4 mb-0">
+                    {{ form.school_id_to_enroll|as_crispy_field }}
+                  </div>
+                </div>
+                <div class="form-group col-md-13 mb-0">
+                  {{ form.school_address_to_enroll|as_crispy_field }}
+                </div>
+              </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-2 mb-0">
+                  {{ form.semester|as_crispy_field }}
+                </div>
+                <div class="form-group col-md-6 mb-0">
+                  {{ form.track|as_crispy_field }}
+                </div>
+                <div class="form-group col-md-4 mb-0">
+                  {{ form.strand|as_crispy_field }}
+                </div>
+            </div>
+      </div>
+    </div>
+    <div class="content-login">
+      <div class="master-login">
+            <h4>B. Student Information</h4>
+            <div class="form-row bg-sec">
+                <div class="form-group col-md-6 mb-0 ">
+                  {{ form.psa_cer_no|as_crispy_field }}
+                </div>
+                <div class="form-group col-md-6 mb-0">
+                  {{ form.lrn|as_crispy_field }}
+                </div>
+            </div>
+            <div class="form-row bg-sec">
+                <div class="form-group col-md-4 mb-0">
+                  {{ form.last_name|as_crispy_field }}
+                </div>
+                <div class="form-group col-md-3 mb-0">
+                  {{ form.first_name|as_crispy_field }}
+                </div>
+                <div class="form-group col-md-3 mb-0">
+                  {{ form.middle_name|as_crispy_field }}
+                </div>
+                <div class="form-group col-md-2 mb-0">
+                  {{ form.extension_name|as_crispy_field }}
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group col-md-6 mb-0">
+                <div class="form-row">
+                  <div class="form-group col-md-12 mb-0">
+                    {{ form.birthdate|as_crispy_field }}
+                  </div>
+                </div>
+                  
+                  <div class="form-row">
+                    <div class="form-group col-md-6 mb-0">
+                      {{ form.age|as_crispy_field }}
+                    </div>
+                    <div class="form-group col-md-6 mb-0">
+                      {{ form.sex|as_crispy_field }}
+                    </div>
+                  </div>
+                  
+                  
+                  {{ form.ip|as_crispy_field }}
+                  {{ form.ip_specify|as_crispy_field }}
+                  {{ form.mother_tongue|as_crispy_field }}
+                  {{ form.religion|as_crispy_field }}
+                </div>
+                <div class="form-group col-md-6 mb-0">
+                <h6 class="border border-top-0 border-left-0 border-right-0 mb-3 border-dark">For Learners with Special Education Needs</h6>
+                  {{ form.special_ed_needs|as_crispy_field }}
+                  {{ form.speed_needs_specify|as_crispy_field }}
+                  {{ form.technology_devices|as_crispy_field }}
+                  {{ form.technology_devices_specify|as_crispy_field }}
+                </div>
+            </div>
+            <h6 class="border border-top-0 border-left-0 border-right-0 mb-3 border-dark">Address</h6>
+            <div class="form-row bg-sec">
+                <div class="form-group col-md-6 mb-0">
+                   {{ form.house_number_and_street|as_crispy_field }}
+                </div>
+                <div class="form-group col-md-6 mb-0">
+                  {{ form.barangay|as_crispy_field }}
+                </div>
+            </div>
+            <div class="form-row bg-sec">
+                <div class="form-group col-md-4 mb-0">
+                   {{ form.city_municipality|as_crispy_field }}
+                </div>
+                <div class="form-group col-md-4 mb-0">
+                  {{ form.province|as_crispy_field }}
+                </div>
+                <div class="form-group col-md-4 mb-0">
+                  {{ form.region|as_crispy_field }}
+                </div>
+            </div>
+      </div>
+    </div>
+    <div class="content-login">
+      <div class="master-login">
+            <h4>C. Parent/Guardian Information</h4>
+            <div class="form-row">
+                <div class="form-group col-md-4 mb-0">
+                   {{ form.father_full_name|as_crispy_field }}
+                   {{ form.father_educ_attainment|as_crispy_field }}
+                   {{ form.father_employment_status|as_crispy_field }}
+                   {{ form.father_working_from_home_due_to_ecq|as_crispy_field }}
+                   {{ form.father_contact|as_crispy_field }}
+                </div>
+                <div class="form-group col-md-4 mb-0 bg-sec">
+                  {{ form.mother_full_name|as_crispy_field }}
+                  {{ form.mother_educ_attainment|as_crispy_field }}
+                  {{ form.mother_employment_status|as_crispy_field }}
+                  {{ form.mother_working_from_home_due_to_ecq|as_crispy_field }}
+                  {{ form.mother_contact|as_crispy_field }}
+                </div>
+                <div class="form-group col-md-4 mb-0">
+                  {{ form.guardian_full_name|as_crispy_field }}
+                  {{ form.guardian_educ_attainment|as_crispy_field }}
+                  {{ form.guardian_employment_status|as_crispy_field }}
+                  {{ form.guardian_working_from_home_due_to_ecq|as_crispy_field }}
+                  {{ form.guardian_contact|as_crispy_field }}
+                </div>
+            </div>
+      </div>
+    </div>
+    <div class="content-login">
+      <div class="master-login">
+            <div class="form-row">
+              <h4>D. HOUSEHOLD CAPACITY AND ACCESS TO DISTANCE LEARNING</h4>
+              <div class="form-group col-md-6 mb-0  bg-sec">
+                <span><b>D1. How does your child go to school? Choose all that applies.</b></span>
+                <div class="form-row">
+                  <div class="form-group col-md-6 mb-0">
+                    {{ form.d1_walking|as_crispy_field }}
+                    {{ form.d1_public_commute_landwater|as_crispy_field }}
+                  </div>
+                  <div class="form-group col-md-6 mb-0">
+                    {{ form.d1_family_owned_vehicle|as_crispy_field }}
+                    {{ form.d1_school_service|as_crispy_field }}
+                  </div>
+                </div>
+              </div>
+              <div class="form-group col-md-6 mb-0">
+                  <b>D2. How many of your household members (including the enrollee) are studying in School Year 2020-2021? Please specify each.</b>
+                  <div class="form-row">
+                    <div class="form-group col-md-2 mb-0">
+                      {{ form.kinder|as_crispy_field }}
+                      {{ form.grade_1|as_crispy_field }}
+                      {{ form.grade_2|as_crispy_field }}
+                      
+                    </div>
+                    <div class="form-group col-md-2 mb-0">
+                      {{ form.grade_3|as_crispy_field }}
+                      {{ form.grade_4|as_crispy_field }}
+                      {{ form.grade_5|as_crispy_field }}
+                      
+                    </div>
+                    <div class="form-group col-md-2 mb-0">
+                      {{ form.grade_6|as_crispy_field }}
+                      {{ form.grade_7|as_crispy_field }}
+                      {{ form.grade_8|as_crispy_field }}
+                    </div>
+                    <div class="form-group col-md-2 mb-0">
+                      {{ form.grade_9|as_crispy_field }}
+                      {{ form.grade_10|as_crispy_field }}
+                      {{ form.grade_11|as_crispy_field }}
+                    </div>
+                    <div class="form-group col-md-2 mb-0">
+                      {{ form.grade_12|as_crispy_field }}
+                      {{ form.others|as_crispy_field }}
+                    </div>
+                  </div>
+                </div>
+            </div>
+            <div class="form-group col-md-12">
+              <div class="form-row">
+                <div class="form-group col-md-6 mb-0">
+                  <b>D3. Who among the household members can provide instructional support to the child’s distance learning? Choose all that applies.</b>
+                  <div class="form-row">
+                    <div class="form-group col-md-6 mb-0">
+                      {{ form.d3_parents_or_guardians|as_crispy_field }}
+                      {{ form.d3_elder_siblings|as_crispy_field }}
+                      {{ form.d3_grandparents|as_crispy_field }}
+                      {{ form.d3_extended_members|as_crispy_field }}
+                    </div>
+                    <div class="form-group col-md-6 mb-0">
+                      {{ form.d3_others|as_crispy_field }}
+                      {{ form.d3_none|as_crispy_field }}
+                      {{ form.d3_independent|as_crispy_field }}
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group col-md-6 mb-0 bg-sec">
+                  <b>D4. What devices are available at home that the learner can use for learning? Check all that applies.</b>
+                  <div class="form-row">
+                    <div class="form-group col-md-6 mb-0">
+                      {{ form.d4_cable_tv|as_crispy_field }}
+                      {{ form.d4_noncable_tv|as_crispy_field }}
+                      {{ form.d4_basic_cp|as_crispy_field }}
+                      {{ form.d4_smartphone|as_crispy_field }}
+                      {{ form.d4_tablet|as_crispy_field }}
+                    </div>
+                    <div class="form-group col-md-6 mb-0">
+                      {{ form.d4_radio|as_crispy_field }}
+                      {{ form.d4_desktop|as_crispy_field }}
+                      {{ form.d4_laptop|as_crispy_field }}
+                      {{ form.d4_none|as_crispy_field }}
+                      {{ form.d4_others|as_crispy_field }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group col-md-12">
+              <div class="form-row">
+                <div class="form-group col-md-6 mb-0  bg-sec">
+                  <b>D5. Do you have a way to connect to the internet?</b>
+                  {{ form.have_internet|as_crispy_field }}
+                </div>
+                <div class="form-group col-md-6 mb-0">
+                  <b>D6. How do you connect to the internet? Choose all that applies.</b>
+                  {{ form.d6_own_mobile_data|as_crispy_field }}
+                  {{ form.d6_own_broadband_internet|as_crispy_field }}
+                  {{ form.d6_computer_shop|as_crispy_field }}
+                  {{ form.d6_other_places|as_crispy_field }}
+                  {{ form.d6_none|as_crispy_field }}
+                </div>
+              </div>
+            </div>
+            <div class="form-group col-md-12 mb-0">
+              <div class="form-row">
+                <div class="form-group col-md-6 mb-0">
+                  <b>D7. What distance learning modality/ies do you prefer for your child? Choose all that applies.</b>
+                  <div class="form-row">
+                    <div class="form-group col-md-6 mb-0">
+                      {{ form.d7_ol_learning|as_crispy_field }}
+                      {{ form.d7_tv|as_crispy_field }}
+                      {{ form.d7_radio|as_crispy_field }}
+                    </div>
+                    <div class="form-group col-md-6 mb-0">
+                      {{ form.d7_modular|as_crispy_field }}
+                      {{ form.d7_f2f_w_modalities|as_crispy_field }}
+                      {{ form.d7_others|as_crispy_field }}
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group col-md-6 mb-0  bg-sec">
+                  <b>D8. What are the challenges that may affect your child’s learning process through distance education? Choose all that applies.</b>
+                  <div class="form-row">
+                    <div class="form-group col-md-6 mb-0">
+                      {{ form.d8_lack_gadgets|as_crispy_field }}
+                      {{ form.d8_insufficient_load|as_crispy_field }}
+                      {{ form.d8_unstable_internet|as_crispy_field }}
+                      {{ form.d8_health_conditions|as_crispy_field }}
+                      {{ form.d8_difficulty_independent_learning|as_crispy_field }}
+                    </div>
+                    <div class="form-group col-md-6 mb-0">
+                      {{ form.d8_con_other_activities|as_crispy_field }}
+                      {{ form.d8_hi_elec_consump|as_crispy_field }}
+                      {{ form.d8_distractions|as_crispy_field }}
+                      {{ form.d8_others|as_crispy_field }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-4 mb-0">
+                   {{ form.image|as_crispy_field }}
+                </div>
+                <div class="form-group col-md-4 mb-0">
+                  {{ form.birth_certificate|as_crispy_field }}
+                </div>
+                <div class="form-group col-md-4 mb-0">
+                  {{ form.form_137|as_crispy_field }}
+                </div>
+            </div>
+            <div class="form-group col-md-12 mb-0">
+              <b>{{ form.certify|as_crispy_field }}</b>
+            </div>
+
+          </fieldset>
+          {% if student.student.id == user %}
+            <div class="form-group">
+              <a class="btn btn-primary" href="{% url 'stem:dlpdf' %}">Im already Enrolled</a>
+            </div>
+          {% else %}
+            <div class="form-group">
+              <button class="btn btn-primary" type="submit">Submit</button>
+            </div>
+          {% endif %}
+          <!--<span>{{student.student.id}}</span><span><b>{{user}}</b></span>-->
+        </form>
+      </div>
+    </div>
+    </div>
+    {% endblock content %}
+    
