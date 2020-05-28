@@ -1,0 +1,17 @@
+asgiref==3.2.3
+Django==3.0.2
+django-crispy-forms==1.8.1
+django-filter==2.2.0
+django-videofield==0.1.1
+django-widget-tweaks==1.4.5
+html5lib==1.0.1
+Pillow==7.0.0
+pisa==3.0.33
+pyPdf==1.13
+PyPDF2==1.26.0
+pytz==2019.3
+reportlab==3.5.42
+six==1.15.0
+sqlparse==0.3.0
+webencodings==0.5.1
+xhtml2pdf==0.2.4
